@@ -22,5 +22,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rbac_db   # "db" is the service name above
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: local-dev-secret-change-me-at-least-32-chars   # local development only
     ports:
       - "8080:8080"

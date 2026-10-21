@@ -33,6 +33,9 @@ public class Dtos {
         private Role role;
         private List<String> permissions;
         private String message;
+        private String token;              // signed JWT to send as "Authorization: Bearer <token>"
+        private String tokenType = "Bearer";
+        private long expiresIn;            // token lifetime in seconds
 
         public LoginResponse() {}
 
@@ -50,6 +53,12 @@ public class Dtos {
         public void setPermissions(List<String> permissions) { this.permissions = permissions; }
         public String getMessage() { return message; }
         public void setMessage(String message) { this.message = message; }
+        public String getToken() { return token; }
+        public void setToken(String token) { this.token = token; }
+        public String getTokenType() { return tokenType; }
+        public void setTokenType(String tokenType) { this.tokenType = tokenType; }
+        public long getExpiresIn() { return expiresIn; }
+        public void setExpiresIn(long expiresIn) { this.expiresIn = expiresIn; }
     }
 
     // ==================== Register ====================

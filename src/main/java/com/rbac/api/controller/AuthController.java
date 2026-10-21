@@ -29,9 +29,10 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("User registered successfully", user));
     }
 
+    /** JWTs are stateless: the server keeps no session, so logging out means the client discards its token. */
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {
-        return ResponseEntity.ok(ApiResponse.success("Logged out successfully", null));
+        return ResponseEntity.ok(ApiResponse.success("Logged out. Discard the token on the client.", null));
     }
 
     @GetMapping("/status")

@@ -5,6 +5,7 @@ import com.rbac.api.entity.Role;
 import com.rbac.api.entity.User;
 import com.rbac.api.exception.Exceptions.*;
 import com.rbac.api.repository.UserRepository;
+import com.rbac.api.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Transactional
@@ -50,6 +53,8 @@ public class UserService {
         response.setRole(user.getRole());
         response.setPermissions(user.getRole().getPermissions());
         response.setMessage("Login successful");
+        response.setToken(jwtService.generateToken(user));
+        response.setExpiresIn(jwtService.getExpirationSeconds());
         return response;
     }
 
