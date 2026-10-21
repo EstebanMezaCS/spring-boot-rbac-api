@@ -72,7 +72,7 @@ public class UserService {
             passwordEncoder.encode(request.getPassword()), // store only the hash
             request.getName(),
             request.getEmail(),
-            Role.VIEWER
+            Role.VIEWER // public sign-up always gets the lowest role; only an admin can promote (PUT /api/users/{id}/role)
         );
 
         User savedUser = userRepository.save(user);

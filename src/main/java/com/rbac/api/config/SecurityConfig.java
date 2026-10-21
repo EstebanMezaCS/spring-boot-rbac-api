@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,8 +25,10 @@ import java.io.IOException;
  *  - Stateless: no server session; every request must carry its own JWT.
  *  - Only login, register, and health checks are public; everything else needs a valid token.
  *  - Errors return the same JSON shape as the rest of the API (ErrorResponse).
+ *  - @EnableMethodSecurity turns on @PreAuthorize, used in controllers for per-endpoint permissions.
  */
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtService jwtService;
