@@ -5,6 +5,7 @@ import com.rbac.api.entity.Role;
 import com.rbac.api.entity.User;
 import com.rbac.api.exception.Exceptions.*;
 import com.rbac.api.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -27,7 +30,8 @@ public class UserService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AuthenticationException("Invalid username or password"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        // Compare the raw password against the stored BCrypt hash (never compare plain text)
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Invalid username or password");
         }
 
@@ -60,7 +64,7 @@ public class UserService {
 
         User user = new User(
             request.getUsername(),
-            request.getPassword(),
+            passwordEncoder.encode(request.getPassword()), // store only the hash
             request.getName(),
             request.getEmail(),
             Role.VIEWER
@@ -103,7 +107,7 @@ public class UserService {
 
         User user = new User(
             request.getUsername(),
-            request.getPassword(),
+            passwordEncoder.encode(request.getPassword()), // store only the hash
             request.getName(),
             request.getEmail(),
             request.getRole() != null ? request.getRole() : Role.VIEWER
@@ -131,7 +135,7 @@ public class UserService {
             user.setEmail(request.getEmail());
         }
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            user.setPassword(request.getPassword());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
         if (request.getIsActive() != null) {
             user.setActive(request.getIsActive());

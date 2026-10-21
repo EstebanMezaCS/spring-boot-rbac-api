@@ -38,6 +38,11 @@
             <scope>runtime</scope>
         </dependency>
         
+        <!-- BCrypt password hashing (crypto module only; full Spring Security comes later) -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -56,6 +61,8 @@
     </dependencies>
     
     <build>
+        <!-- Fixed jar name so the Dockerfile can copy target/app.jar regardless of version -->
+        <finalName>app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
