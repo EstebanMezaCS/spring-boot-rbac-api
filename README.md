@@ -285,14 +285,6 @@ src/test/java/com/rbac/api/
 
 ---
 
-## Related project
-
-| Repository | Description |
-|------------|-------------|
-| [inventory-blockchain](https://github.com/EstebanMezaCS/inventory-blockchain) | The full supply chain platform this API was extracted from |
-
----
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
